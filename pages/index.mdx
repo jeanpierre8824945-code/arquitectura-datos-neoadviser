@@ -1,17 +1,10 @@
-import { Tabs, Tab } from 'nextra/components'
-
-<Tabs items={['Ciclo del Dato', 'CRISP-DM']}>
-  <Tab>
-    **Enfoque Operativo:** Se centra en el flujo técnico, almacenamiento en bases de datos relacionales y vectoriales, y la latencia del sistema.
-  </Tab>
-  <Tab>
-    **Enfoque Estratégico:** Se centra en el negocio, la analítica predictiva y el entrenamiento del modelo de lenguaje para evitar el abandono de carritos.
-  </Tab>
-</Tabs>
+import { Callout } from 'nextra/components'
 
 # Análisis Comparativo: Ciclo del Dato vs. CRISP-DM
 
-**Caso de Estudio Práctico:** Arquitectura de Datos en un Asistente SaaS de Inteligencia Artificial para E-commerce (Prevención de Abandono de Carrito).
+<Callout type="info" emoji="🚀">
+  **Caso de Estudio Práctico:** Arquitectura de Datos en un Asistente SaaS de Inteligencia Artificial para E-commerce (Prevención de Abandono de Carrito).
+</Callout>
 
 ---
 
@@ -20,28 +13,40 @@ Comparar estructural y funcionalmente el **Ciclo de Vida del Dato** y la **Metod
 
 ---
 
-## 2. Comparativo Estructural y Funcional
+## 2. Comparativo Estructural Interactivo
 
-### A. Enfoque
-* **Ciclo del Dato:** Operativo y de infraestructura. Se centra en el flujo técnico de la información (cómo se capturan los clics del usuario, cómo fluyen por el backend y cómo se almacenan en bases de datos relacionales y vectoriales).
-* **CRISP-DM:** Estratégico y de negocio. Se enfoca en cómo explotar esos datos almacenados para entrenar y ajustar un modelo de Lenguaje (LLM) que logre que el usuario concrete la compra.
+Haz clic en cada sección para desplegar el análisis detallado:
 
-### B. Alcance
-* **Ciclo del Dato:** Abarca la vida técnica de la información de principio a fin. Incluye la seguridad de las bases de datos, la latencia en las consultas, la escalabilidad del servidor y el borrado de registros obsoletos.
-* **CRISP-DM:** Tiene el ciclo de vida de un proyecto analítico. Empieza con la comprensión de un problema ("estamos perdiendo ventas en el carrito") y termina cuando el asistente de IA se despliega y se mide el aumento en la tasa de conversión.
+<details style={{ background: 'rgba(59, 130, 246, 0.05)', padding: '15px', borderRadius: '8px', marginBottom: '10px', border: '1px solid rgba(59, 130, 246, 0.2)' }}>
+  <summary style={{ cursor: 'pointer', fontWeight: 'bold', fontSize: '1.1em' }}>🔍 A. Enfoque de los Modelos</summary>
+  <p style={{ marginTop: '10px' }}>
+    * <b>Ciclo del Dato:</b> Operativo y de infraestructura. Se centra en el flujo técnico de la información (captura de clics, backend en FastAPI, almacenamiento en PostgreSQL y ChromaDB).<br/>
+    * <b>CRISP-DM:</b> Estratégico y de negocio. Se enfoca en explotar los datos para ajustar el modelo de lenguaje (OpenAI) y evitar que el usuario abandone el carrito.
+  </p>
+</details>
 
-### C. Tipo de Problema que Resuelve
-* **Ciclo del Dato:** Resuelve problemas de latencia, integridad y disponibilidad. (Ej: Garantizar que cuando un modelo de IA consulte el catálogo de productos, la base de datos responda en milisegundos sin colapsar).
-* **CRISP-DM:** Resuelve problemas predictivos y de toma de decisiones. (Ej: Determinar qué producto exacto y con qué tono debe hablar la IA para convencer a un cliente específico).
+<details style={{ background: 'rgba(59, 130, 246, 0.05)', padding: '15px', borderRadius: '8px', marginBottom: '10px', border: '1px solid rgba(59, 130, 246, 0.2)' }}>
+  <summary style={{ cursor: 'pointer', fontWeight: 'bold', fontSize: '1.1em' }}>📏 B. Alcance y Límites</summary>
+  <p style={{ marginTop: '10px' }}>
+    * <b>Ciclo del Dato:</b> Abarca toda la vida técnica de la información (seguridad, latencia, escalabilidad y purga de registros antiguos).<br/>
+    * <b>CRISP-DM:</b> Ciclo de vida de un proyecto analítico (desde detectar la pérdida de ventas en el carrito hasta desplegar el asistente de IA y medir la conversión).
+  </p>
+</details>
 
-### D. Resultado Esperado
-* **Ciclo del Dato:** Un "Pipeline" (tubería) de datos robusto, limpio y automatizado, donde la información del catálogo y los usuarios esté siempre disponible y segura.
-* **CRISP-DM:** Un modelo predictivo en producción (prompts optimizados y sistema de recomendación) que genera interacciones hiper-personalizadas y aumenta el ROI del E-commerce.
+<details style={{ background: 'rgba(59, 130, 246, 0.05)', padding: '15px', borderRadius: '8px', marginBottom: '10px', border: '1px solid rgba(59, 130, 246, 0.2)' }}>
+  <summary style={{ cursor: 'pointer', fontWeight: 'bold', fontSize: '1.1em' }}>⚙️ C. Tipo de Problema que Resuelve</summary>
+  <p style={{ marginTop: '10px' }}>
+    * <b>Ciclo del Dato:</b> Resuelve problemas de rendimiento (garantizar que la base de datos vectorial responda en milisegundos).<br/>
+    * <b>CRISP-DM:</b> Resuelve problemas predictivos (determinar el producto exacto y tono que la IA debe usar para persuadir al cliente).
+  </p>
+</details>
 
-### E. Rol e Interconexión en la Arquitectura de Datos
-La relación entre ambos es de **estricta dependencia**. El Ciclo del Dato provee la infraestructura (las bases de datos y APIs) para que los datos fluyan de forma segura. CRISP-DM es la "fábrica" que toma esos datos crudos, los entiende y crea un producto de valor (la predicción). 
-* Sin un buen Ciclo del Dato, CRISP-DM procesaría información basura.
-* Sin CRISP-DM, los datos del Ciclo solo generarían costos de almacenamiento en la nube sin aportar valor comercial.
+<details style={{ background: 'rgba(59, 130, 246, 0.05)', padding: '15px', borderRadius: '8px', marginBottom: '10px', border: '1px solid rgba(59, 130, 246, 0.2)' }}>
+  <summary style={{ cursor: 'pointer', fontWeight: 'bold', fontSize: '1.1em' }}>🎯 D. Resultado Esperado e Interconexión</summary>
+  <p style={{ marginTop: '10px' }}>
+    El Ciclo del Dato construye la infraestructura para que los datos fluyan, mientras que CRISP-DM actúa como la fábrica que los transforma en valor comercial. Sin el Ciclo, la IA procesaría datos corruptos; sin CRISP-DM, la infraestructura solo generaría costos sin generar ventas.
+  </p>
+</details>
 
 ---
 
@@ -52,18 +57,18 @@ La relación entre ambos es de **estricta dependencia**. El Ciclo del Dato prove
 
 ## 4. Justificación Técnica de Etapas Estratégicas
 
-### Del Ciclo del Dato: Etapa de "Procesamiento y Transformación"
-*(Aplicación: Conversión del texto del catálogo de productos en "Embeddings" o vectores matemáticos para búsqueda semántica).*
+<Callout type="warning" emoji="⚠️">
+  **Etapa Crítica del Ciclo del Dato:** Procesamiento y Transformación (Vectorización de productos para ChromaDB).
+</Callout>
 
-* **¿Por qué es crítica para la calidad del dato?** Los modelos de IA no leen el texto como los humanos. Necesitan que la información esté vectorizada (normalizada matemáticamente) para encontrar relaciones entre lo que el cliente pide y lo que la tienda vende.
-* **¿Qué riesgos existen si falla?** Si los vectores se generan con ruido, metadatos incompletos o errores de codificación, la base de datos entregará resultados irrelevantes.
-* **¿Cómo impacta la toma de decisiones?** El asistente recomendará productos equivocados (Ej: recomendar zapatos cuando el cliente buscaba camisas), frustrando al usuario y aumentando la tasa de abandono.
-* **¿Qué relación tiene con la arquitectura?** Es el puente core en el backend donde la data estructurada tradicional se transforma para habilitar la Inteligencia Artificial.
+* **¿Por qué es crítica?** Los modelos de IA necesitan que la información esté vectorizada matemáticamente para hacer búsquedas semánticas precisas.
+* **Riesgo si falla:** Si los vectores tienen ruido, la base de datos devolverá resultados irrelevantes.
+* **Impacto en decisiones:** El asistente recomendará productos erróneos, frustrando al usuario.
 
-### De CRISP-DM: Etapa de "Modelado" (Modeling)
-*(Aplicación: Ajuste de parámetros, contexto y System Prompting en la API del Modelo de Lenguaje).*
+<Callout type="error" emoji="🚨">
+  **Etapa Crítica de CRISP-DM:** Modelado (Ajuste de parámetros y System Prompting en la API de OpenAI).
+</Callout>
 
-* **¿Por qué es crítica para la calidad del dato?** Aquí la data recuperada se convierte en la predicción final. Si los parámetros del modelo (como la "temperatura" o el nivel de creatividad) no son correctos, la salida será deficiente a pesar de tener una entrada perfecta.
-* **¿Qué riesgos existen si falla?** Riesgo de "Alucinaciones". El modelo podría inventar promociones que no existen, prometer envíos imposibles o recomendar productos fuera de stock.
-* **¿Cómo impacta la toma de decisiones?** Afecta directamente la reputación de la marca, genera pérdidas por descuentos inventados y disminuye el Retorno de Inversión (ROI).
-* **¿Qué relación tiene con la arquitectura?** Determina la carga computacional requerida. Un modelado eficiente optimiza los tokens enviados a la API, manteniendo baja la latencia y reduciendo los costos operativos del servidor.
+* **¿Por qué es crítica?** Convierte la data recuperada en la predicción final.
+* **Riesgo si falla:** Alto riesgo de "alucinaciones" (inventar descuentos o productos fuera de stock).
+* **Impacto en decisiones:** Afecta la reputación de la marca y reduce drásticamente el Retorno de Inversión (ROI).
