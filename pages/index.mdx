@@ -1,9 +1,4 @@
-import { Callout } from 'nextra/components'
-
-
-# Análisis Comparativo: Ciclo del Dato vs. CRI
-
-SP-DM
+# Análisis Comparativo: Ciclo del Dato vs. CRISP-DM
 
 **Caso de Estudio Práctico:** Arquitectura de Datos en un Asistente SaaS de Inteligencia Artificial para E-commerce (Prevención de Abandono de Carrito).
 
@@ -39,26 +34,20 @@ La relación entre ambos es de **estricta dependencia**. El Ciclo del Dato prove
 
 ---
 
-## 3. Justificación Técnica de Etapas Estratégicas
+## 3. Diagrama de Arquitectura del Caso
+![Diagrama del Ciclo del Dato y CRISP-DM](/diagramaia.png)
 
-Para evidenciar la criticidad de ambos modelos, se han seleccionado dos etapas clave dentro de la arquitectura del Asistente IA:
+---
+
+## 4. Justificación Técnica de Etapas Estratégicas
 
 ### Del Ciclo del Dato: Etapa de "Procesamiento y Transformación"
+*(Aplicación: Conversión del texto del catálogo de productos en "Embeddings" o vectores matemáticos para búsqueda semántica).*
 
-<Callout type="info" emoji="⚙️">
-  **¿Por qué es crítica?** Los modelos de IA necesitan que la información esté vectorizada (normalizada matemáticamente) para encontrar relaciones semánticas precisas.
-</Callout>
-
-<Callout type="error" emoji="🚨">
-  **Riesgo si falla:** Si los vectores se generan con ruido o metadatos incompletos, la base de datos entregará resultados irrelevantes.
-</Callout>
-
-<Callout type="warning" emoji="📉">
-  **Impacto en el negocio:** El asistente recomendará productos equivocados, frustrando al usuario y aumentando la tasa de abandono.
-</Callout>
-
-## Diagrama de Arquitectura del Caso
-![Diagrama Comparativo del Ciclo del Dato y CRISP-DM](/diagramaia.png)
+* **¿Por qué es crítica para la calidad del dato?** Los modelos de IA no leen el texto como los humanos. Necesitan que la información esté vectorizada (normalizada matemáticamente) para encontrar relaciones entre lo que el cliente pide y lo que la tienda vende.
+* **¿Qué riesgos existen si falla?** Si los vectores se generan con ruido, metadatos incompletos o errores de codificación, la base de datos entregará resultados irrelevantes.
+* **¿Cómo impacta la toma de decisiones?** El asistente recomendará productos equivocados (Ej: recomendar zapatos cuando el cliente buscaba camisas), frustrando al usuario y aumentando la tasa de abandono.
+* **¿Qué relación tiene con la arquitectura?** Es el puente core en el backend donde la data estructurada tradicional se transforma para habilitar la Inteligencia Artificial.
 
 ### De CRISP-DM: Etapa de "Modelado" (Modeling)
 *(Aplicación: Ajuste de parámetros, contexto y System Prompting en la API del Modelo de Lenguaje).*
@@ -67,5 +56,3 @@ Para evidenciar la criticidad de ambos modelos, se han seleccionado dos etapas c
 * **¿Qué riesgos existen si falla?** Riesgo de "Alucinaciones". El modelo podría inventar promociones que no existen, prometer envíos imposibles o recomendar productos fuera de stock.
 * **¿Cómo impacta la toma de decisiones?** Afecta directamente la reputación de la marca, genera pérdidas por descuentos inventados y disminuye el Retorno de Inversión (ROI).
 * **¿Qué relación tiene con la arquitectura?** Determina la carga computacional requerida. Un modelado eficiente optimiza los tokens enviados a la API, manteniendo baja la latencia y reduciendo los costos operativos del servidor.
-
-
