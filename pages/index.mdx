@@ -48,6 +48,14 @@ Haz clic en cada sección para desplegar el análisis detallado:
   </p>
 </details>
 
+<details style={{ background: 'rgba(59, 130, 246, 0.05)', padding: '15px', borderRadius: '8px', marginBottom: '10px', border: '1px solid rgba(59, 130, 246, 0.2)' }}>
+  <summary style={{ cursor: 'pointer', fontWeight: 'bold', fontSize: '1.1em' }}>🏗️ E. Rol dentro de la Arquitectura de Datos</summary>
+  <p style={{ marginTop: '10px' }}>
+    * <b>Ciclo del Dato:</b> Provee los cimientos técnicos (pipelines, almacenamiento, bases de datos vectoriales) asegurando que la data viaje de forma segura y eficiente.<br/>
+    * <b>CRISP-DM:</b> Dicta los requisitos analíticos que debe soportar dicha arquitectura (por ejemplo, exigir canales de baja latencia para que las predicciones del modelo operen en tiempo real).
+  </p>
+</details>
+
 ---
 
 ## 3. Diagrama de Arquitectura del Caso
@@ -57,18 +65,44 @@ Haz clic en cada sección para desplegar el análisis detallado:
 
 ## 4. Justificación Técnica de Etapas Estratégicas
 
-<Callout type="warning" emoji="⚠️">
-  **Etapa Crítica del Ciclo del Dato:** Procesamiento y Transformación (Vectorización de productos para ChromaDB).
+### Etapas del Ciclo del Dato
+
+<Callout type="warning" emoji="📥">
+  **Etapa Estratégica 1:** Captura e Ingesta de Datos (Recolección de clics y eventos de sesión).
 </Callout>
 
-* **¿Por qué es crítica?** Los modelos de IA necesitan que la información esté vectorizada matemáticamente para hacer búsquedas semánticas precisas.
-* **Riesgo si falla:** Si los vectores tienen ruido, la base de datos devolverá resultados irrelevantes.
-* **Impacto en decisiones:** El asistente recomendará productos erróneos, frustrando al usuario.
+* **¿Por qué es crítica para la calidad del dato?** Define la exactitud inicial de la información. Si los eventos del usuario no se capturan correctamente, toda la cadena posterior se contamina.
+* **¿Qué riesgos existen si esta etapa falla?** Pérdida de eventos clave (ej. no registrar cuando el cliente agrega un producto al carrito), generando vacíos de información.
+* **¿Cómo impacta la toma de decisiones?** Impide activar el asistente en el momento adecuado, perdiendo oportunidades reales de conversión.
+* **¿Qué relación tiene con la arquitectura de datos?** Exige el diseño de pipelines de streaming (como Apache Kafka) capaces de manejar altos volúmenes de eventos sin saturar el sistema.
 
-<Callout type="error" emoji="🚨">
-  **Etapa Crítica de CRISP-DM:** Modelado (Ajuste de parámetros y System Prompting en la API de OpenAI).
+<Callout type="warning" emoji="⚙️">
+  **Etapa Estratégica 2:** Procesamiento y Transformación (Vectorización de productos para ChromaDB).
 </Callout>
 
-* **¿Por qué es crítica?** Convierte la data recuperada en la predicción final.
-* **Riesgo si falla:** Alto riesgo de "alucinaciones" (inventar descuentos o productos fuera de stock).
-* **Impacto en decisiones:** Afecta la reputación de la marca y reduce drásticamente el Retorno de Inversión (ROI).
+* **¿Por qué es crítica para la calidad del dato?** Garantiza que la representación matemática (embeddings) de los productos sea limpia y estructurada para las búsquedas semánticas.
+* **¿Qué riesgos existen si esta etapa falla?** Si los vectores tienen ruido, la base de datos devolverá similitudes irrelevantes o nulas.
+* **¿Cómo impacta la toma de decisiones?** El asistente de IA recomendará productos erróneos, frustrando al usuario y llevándolo a abandonar la compra.
+* **¿Qué relación tiene con la arquitectura de datos?** Determina la necesidad de integrar procesos ETL robustos y bases de datos vectoriales específicas, complementando a los sistemas relacionales tradicionales.
+
+---
+
+### Etapas de CRISP-DM
+
+<Callout type="error" emoji="📊">
+  **Etapa Estratégica 1:** Comprensión del Negocio (Definición del "Abandono de Carrito").
+</Callout>
+
+* **¿Por qué es crítica para la calidad del dato?** Establece las reglas lógicas que filtrarán qué datos son útiles y cuáles son ruido para el objetivo comercial.
+* **¿Qué riesgos existen si esta etapa falla?** Se podría construir un modelo perfecto para un problema equivocado (predecir compras generales en lugar de prevenir abandonos inminentes).
+* **¿Cómo impacta la toma de decisiones?** Las métricas de éxito (KPIs) estarán desalineadas, dificultando a la gerencia medir si la IA realmente está mejorando las ventas.
+* **¿Qué relación tiene con la arquitectura de datos?** Define los requerimientos de disponibilidad; si el negocio exige retener al cliente al instante, la infraestructura debe diseñarse para muy baja latencia.
+
+<Callout type="error" emoji="🧠">
+  **Etapa Estratégica 2:** Modelado (Ajuste de parámetros y System Prompting en la API de IA).
+</Callout>
+
+* **¿Por qué es crítica para la calidad del dato?** Es el filtro final donde la data procesada se convierte en insights concretos; su calibración asegura que el resultado sea coherente.
+* **¿Qué riesgos existen si esta etapa falla?** Alto riesgo de "alucinaciones" del modelo, inventando descuentos inexistentes o sugiriendo ítems fuera de stock.
+* **¿Cómo impacta la toma de decisiones?** Una recomendación equivocada afecta directamente la confianza del comprador, dañando la reputación de la marca y reduciendo el Retorno de Inversión (ROI).
+* **¿Qué relación tiene con la arquitectura de datos?** Obliga a implementar capas de orquestación (como LangChain), gestión de caché para consultas repetitivas y monitoreo del consumo de la API en la nube.
