@@ -155,7 +155,7 @@ La interconexión puede observarse principalmente en los puntos donde los datos 
 |---|---|---|
 | **Captura e Ingesta** | Comprensión del Negocio | Los eventos de los usuarios permiten identificar qué información se necesita para estudiar el abandono de carrito. |
 | **Procesamiento y Transformación** | Comprensión de los Datos | Los datos procesados permiten explorar patrones, características y relaciones relevantes para el problema. |
-| **Procesamiento y Transformación** | Preparación de los Datos | Los datos se limpian, filtran, estructuran y transforman para que puedan ser utilizados por la solución analítica. |
+| **Procesamiento y Transformación** | Preparación de los Datos | Los datos se limpiam, filtran, estructuran y transforman para que puedan ser utilizados por la solución analítica. |
 | **Almacenamiento** | Comprensión y Preparación de los Datos | PostgreSQL y ChromaDB permiten conservar y consultar la información necesaria para el análisis y la recuperación de contexto. |
 | **Disponibilidad y Uso** | Modelado | Los datos disponibles sirven como entrada para construir y configurar la solución de IA. |
 | **Disponibilidad y Uso** | Evaluación | Los resultados producidos por la solución pueden compararse con los objetivos y métricas establecidos por el negocio. |
@@ -173,112 +173,49 @@ La interconexión puede observarse principalmente en los puntos donde los datos 
 
 ---
 
-## 4.2 Aplicación al asistente de IA para e-commerce
+## 4.2 Ejemplo Completo: Aplicación al asistente de IA para e-commerce
 
-Para comprender mejor la relación, puede seguirse una interacción concreta dentro del caso.
+Para comprender mejor la relación y ver cómo interactúa el sistema en la práctica, analicemos el paso a paso de un caso de uso real.
 
 ### 🟢 1. Captura e Ingesta
-
-Un usuario ingresa a la tienda, consulta un producto, lo agrega al carrito y posteriormente abandona la página.
-
-El sistema registra eventos relacionados con la sesión del usuario.
-
+Un usuario ingresa a la tienda, consulta un producto, lo agrega al carrito y posteriormente permanece inactivo sin completar la compra. El sistema registra todos los eventos de esta sesión.
 **Ciclo del Dato:** Captura e Ingesta.
 
----
-
 ### 🔵 2. Procesamiento y Transformación
-
-Los eventos recibidos son procesados para eliminar inconsistencias, estructurar la información y preparar los datos para su posterior utilización.
-
-La información de los productos también puede transformarse en representaciones vectoriales para permitir búsquedas semánticas.
-
+Los eventos recibidos son procesados para eliminar inconsistencias y estructurar la información. La información de los productos también se transforma en embeddings vectoriales para búsquedas semánticas.
 **Ciclo del Dato:** Procesamiento y Transformación.
 
----
-
 ### 🟣 3. Almacenamiento
-
-Los datos estructurados pueden almacenarse en **PostgreSQL**, mientras que las representaciones vectoriales pueden almacenarse en **ChromaDB**.
-
-Esto permite conservar tanto la información tradicional como el contexto necesario para la recuperación semántica.
-
+Los datos estructurados se guardan en **PostgreSQL**, mientras que las representaciones vectoriales van a **ChromaDB**, conservando contexto e historia.
 **Ciclo del Dato:** Almacenamiento.
 
----
-
 ### 🟡 4. Comprensión del Negocio
-
-La organización define el problema que desea resolver:
-
-> **¿Cómo podemos identificar comportamientos asociados al abandono del carrito y utilizar esa información para mejorar la conversión?**
-
-Aquí comienza la aplicación de **CRISP-DM**.
-
----
+La empresa se plantea: > *¿Cómo podemos identificar comportamientos asociados al abandono del carrito y usar esa información para mejorar la conversión?* Aquí comienza la aplicación analítica.
+**CRISP-DM:** Comprensión del Negocio.
 
 ### 🟠 5. Comprensión y Preparación de los Datos
-
-Se analizan los datos disponibles para determinar qué variables y eventos son relevantes.
-
-Posteriormente, los datos son filtrados, limpiados y transformados para que puedan utilizarse en la solución.
-
+Se extraen los datos históricos y se filtran para aislar las variables relevantes (tiempo en página, clics, valor del carrito) que alimentarán el sistema.
 **CRISP-DM:** Comprensión de los Datos + Preparación de los Datos.
 
----
-
 ### 🔴 6. Modelado
-
-Con los datos preparados, se construye o configura la solución de inteligencia artificial.
-
-En este caso, puede involucrar un sistema RAG conectado a una base vectorial y un modelo LLM, permitiendo recuperar información relevante antes de generar una respuesta.
-
+Con los datos preparados, se configura el sistema RAG y el modelo LLM para que analice la intención de abandono y recupere estrategias de intervención (ej. ofrecer un descuento).
 **CRISP-DM:** Modelado.
 
----
-
 ### 🟤 7. Evaluación
-
-La solución debe evaluarse para determinar si realmente responde al objetivo empresarial.
-
-Por ejemplo, pueden analizarse indicadores como:
-
-- tasa de conversión;
-- reducción del abandono del carrito;
-- interacción con el asistente;
-- valor promedio de pedido;
-- retorno de la inversión.
-
+Se verifica si el asistente logró reducir la tasa de abandono de carritos y mejorar la conversión durante un periodo de prueba.
 **CRISP-DM:** Evaluación.
 
----
-
 ### ⚫ 8. Despliegue
-
-Finalmente, la solución se integra al entorno real de e-commerce y comienza a interactuar con usuarios.
-
+La solución se integra plenamente al entorno de producción del e-commerce y comienza a interactuar proactivamente con todos los usuarios.
 **CRISP-DM:** Despliegue.
 
-A partir de este momento vuelven a generarse nuevas interacciones.
-
----
-
 ### 🔄 9. Retorno al Ciclo del Dato
-
-Las nuevas consultas, clics, respuestas, conversiones y abandonos generan nuevos registros.
-
-Estos datos regresan al sistema de captura y vuelven a recorrer el Ciclo del Dato.
-
-De esta manera, el proceso puede repetirse para realizar nuevos análisis, mejorar la solución y adaptarse a cambios en el comportamiento de los usuarios.
+Las nuevas interacciones (usuarios que aceptan el descuento, usuarios que cierran el chat, nuevas compras) generan nuevos registros. Estos regresan al sistema de captura, repitiendo el ciclo para mejorar continuamente.
 
 <Callout type="warning" emoji="💡">
   **Idea central del caso**
 
-  El valor de integrar ambos modelos está en que la arquitectura no termina cuando se despliega la solución de IA.
-
-  El sistema continúa generando información, esa información puede analizarse nuevamente y los resultados pueden utilizarse para mejorar la solución.
-
-  Por lo tanto, la combinación de ambos modelos permite construir una arquitectura orientada a la **mejora continua basada en datos**.
+  El valor de integrar ambos modelos está en que la arquitectura no termina cuando se despliega la solución de IA. El sistema continúa generando información, esa información puede analizarse nuevamente y los resultados pueden utilizarse para mejorar la solución. La combinación de ambos permite una arquitectura de **mejora continua basada en datos**.
 </Callout>
 
 ---
@@ -297,16 +234,14 @@ Por otro lado, **CRISP-DM** determina las necesidades relacionadas con la explot
 
 En el caso estudiado, ambas necesidades convergen en una arquitectura que integra:
 
-**Frontend → FastAPI → Procesamiento de datos → PostgreSQL / ChromaDB → Sistema RAG → LLM → Respuesta al usuario**
+**Frontend / E-commerce → API → Ingesta de eventos → Procesamiento → PostgreSQL / ChromaDB → Servicios de IA → Respuesta al usuario → Nuevos eventos**
 
-y que posteriormente permite que las nuevas interacciones regresen nuevamente al sistema de captura.
+Cada componente participa en el ciclo de gestión del dato, pero también soporta una o varias etapas del proceso analítico.
 
 <Callout type="info" emoji="🏗️">
   **Conclusión arquitectónica**
 
   La arquitectura de datos no debe diseñarse únicamente para almacenar información. También debe permitir que esa información sea procesada, analizada, utilizada por modelos de inteligencia artificial y posteriormente reutilizada para generar nuevos ciclos de aprendizaje y mejora.
-
-  De esta forma, el **Ciclo del Dato proporciona la base técnica y de gestión**, mientras que **CRISP-DM proporciona la estructura metodológica para convertir los datos en valor de negocio**.
 </Callout>
 
 ---
@@ -322,35 +257,16 @@ y que posteriormente permite que las nuevas interacciones regresen nuevamente al
 En el caso estudiado, esta etapa comprende la recolección de eventos generados por los usuarios, como visitas a productos, clics, búsquedas, permanencia en páginas, adición de productos al carrito y abandono del proceso de compra.
 
 ### ¿Por qué es crítica para la calidad del dato?
-
-La captura constituye el punto inicial de la información. Si los eventos no se registran correctamente, cualquier análisis posterior partirá de datos incompletos, incorrectos o inconsistentes.
-
-La calidad de los datos posteriores depende, en gran medida, de que la información original se haya capturado de forma precisa, completa y trazable.
+La captura constituye el punto inicial de la información. Si los eventos no se registran correctamente, cualquier análisis posterior partirá de datos incompletos, incorrectos o inconsistentes. La calidad de los datos posteriores depende, en gran medida, de que la información original se haya capturado de forma precisa, completa y trazable.
 
 ### ¿Qué riesgos existen si esta etapa falla?
-
-Una falla puede producir:
-
-- pérdida de eventos importantes;
-- registros duplicados;
-- información incompleta;
-- timestamps incorrectos;
-- eventos fuera de orden;
-- información insuficiente para reconstruir el comportamiento del usuario.
-
-Por ejemplo, si el sistema no registra correctamente que un usuario agregó un producto al carrito, posteriormente no será posible determinar si ese usuario abandonó realmente una intención de compra.
+Una falla puede producir: pérdida de eventos importantes, registros duplicados, información incompleta, timestamps incorrectos o eventos fuera de orden. Por ejemplo, si el sistema no registra correctamente que un usuario agregó un producto al carrito, posteriormente no será posible determinar si ese usuario abandonó realmente una intención de compra.
 
 ### ¿Cómo impacta la toma de decisiones?
-
-Los datos incorrectamente capturados pueden provocar interpretaciones equivocadas sobre el comportamiento de los clientes.
-
-En consecuencia, la empresa podría intervenir en momentos incorrectos, identificar usuarios que realmente no están abandonando la compra o dejar de atender usuarios que sí presentan señales de abandono.
+Los datos incorrectamente capturados pueden provocar interpretaciones equivocadas sobre el comportamiento de los clientes. La empresa podría intervenir en momentos incorrectos o dejar de atender a usuarios que sí presentan señales claras de abandono.
 
 ### ¿Qué relación tiene con la arquitectura de datos?
-
-Esta etapa exige una arquitectura capaz de recibir eventos de diferentes fuentes de forma confiable.
-
-Dependiendo de la escala del sistema, pueden incorporarse mecanismos de ingestión mediante APIs, colas o plataformas de streaming como **Apache Kafka**, garantizando capacidad para manejar múltiples eventos sin perder información.
+Esta etapa exige una arquitectura capaz de recibir eventos de diferentes fuentes de forma confiable. Dependiendo de la escala, pueden incorporarse mecanismos de ingestión mediante APIs, colas o plataformas de streaming como **Apache Kafka**, garantizando capacidad para manejar múltiples eventos sin perder información.
 
 ---
 
@@ -360,123 +276,59 @@ Dependiendo de la escala del sistema, pueden incorporarse mecanismos de ingesti�
 
 Una vez capturados los datos, es necesario transformarlos para que puedan ser utilizados de forma consistente por los sistemas analíticos y de inteligencia artificial.
 
-En este caso se pueden incluir procesos como limpieza, normalización, enriquecimiento y generación de representaciones vectoriales para las consultas semánticas del asistente.
-
 ### ¿Por qué es crítica para la calidad del dato?
-
-El procesamiento permite detectar inconsistencias, transformar formatos y garantizar que los datos tengan una estructura adecuada para su posterior utilización.
-
-En el caso de los productos, por ejemplo, la información debe presentar características consistentes antes de ser transformada en embeddings utilizados en una base de datos vectorial.
+El procesamiento permite detectar inconsistencias, transformar formatos y garantizar que los datos tengan una estructura adecuada para su posterior utilización. En el caso de los productos, por ejemplo, la información debe presentar características consistentes antes de ser transformada en embeddings (vectores) utilizados en la base de datos vectorial.
 
 ### ¿Qué riesgos existen si esta etapa falla?
-
-Una transformación incorrecta puede generar:
-
-- información duplicada;
-- valores inconsistentes;
-- atributos incompletos;
-- embeddings de baja calidad;
-- representaciones incorrectas de productos;
-- resultados de búsqueda semántica irrelevantes.
+Una transformación incorrecta puede generar: información duplicada, valores inconsistentes, atributos incompletos o embeddings de baja calidad. Esto resultaría en representaciones incorrectas de productos y resultados de búsqueda semántica irrelevantes.
 
 ### ¿Cómo impacta la toma de decisiones?
-
-Si la transformación de los datos es incorrecta, el asistente puede recuperar información equivocada y generar recomendaciones poco relevantes.
-
-Por ejemplo, puede asociar un producto con otros que realmente no tienen relación o presentar información desactualizada al usuario.
+Si la transformación de los datos es incorrecta, el asistente puede recuperar información equivocada y generar recomendaciones poco relevantes, como asociar un producto con otros que realmente no tienen relación o sugerir acciones desactualizadas.
 
 ### ¿Qué relación tiene con la arquitectura de datos?
-
-Esta etapa condiciona la implementación de procesos ETL/ELT, servicios de procesamiento y mecanismos especializados de almacenamiento.
-
-En el caso analizado, la arquitectura puede combinar una base de datos relacional como **PostgreSQL** con una base de datos vectorial como **ChromaDB**, permitiendo gestionar tanto información estructurada como representaciones semánticas.
+Esta etapa condiciona la implementación de procesos ETL/ELT, servicios de procesamiento y mecanismos especializados de almacenamiento. La arquitectura debe combinar bases relacionales (**PostgreSQL**) con vectoriales (**ChromaDB**), exigiendo pipelines robustos que dirijan los datos limpios al almacenamiento correcto.
 
 ---
 
-# 5.2 Etapas estratégicas de CRISP-DM
+## 5.2 Etapas estratégicas de CRISP-DM
 
 <Callout type="error" emoji="📊">
   **Etapa Estratégica 1: Comprensión del Negocio**
 </Callout>
 
-La Comprensión del Negocio constituye el punto de partida de CRISP-DM porque establece qué problema se pretende resolver y cómo se determinará el éxito de la solución.
+La Comprensión del Negocio constituye el punto de partida de CRISP-DM porque establece qué problema se pretende resolver y cómo se determinará el éxito de la solución (reducir el abandono de carrito).
 
-En este caso, el problema empresarial es comprender y reducir el **abandono de carrito** en una plataforma de comercio electrónico.
-
-### ¿Por qué es crítica para la calidad de la solución?
-
-Esta etapa permite definir claramente el objetivo del proyecto, las variables relevantes y los criterios utilizados para evaluar los resultados.
-
-Si el objetivo no está correctamente definido, incluso datos técnicamente correctos podrían utilizarse para resolver un problema que no corresponde con las necesidades reales del negocio.
+### ¿Por qué es crítica para la calidad del dato?
+Es crítica para la calidad del dato porque si no se entiende bien el problema empresarial, **se recolectarán, limpiarán y priorizarán los datos equivocados**. Definir el objetivo del negocio asegura que los esfuerzos de calidad, gobernanza y estructuración de datos se enfoquen exactamente en las variables (eventos de sesión, tiempos, clics) que realmente importan para la solución, evitando llenar la arquitectura de "ruido" o datos inútiles.
 
 ### ¿Qué riesgos existen si esta etapa falla?
-
-El principal riesgo es desarrollar una solución técnicamente correcta pero orientada al problema equivocado.
-
-Por ejemplo, podría construirse un sistema enfocado en predecir las ventas generales cuando el verdadero objetivo empresarial es detectar usuarios con alta probabilidad de abandonar su carrito.
+El principal riesgo es desarrollar una solución técnicamente correcta pero orientada al problema equivocado, o procesar terabytes de datos que no aportan al KPI deseado. Por ejemplo, podría construirse un sistema enfocado en predecir las ventas generales cuando el verdadero objetivo es detectar la intención de abandono a nivel de sesión individual.
 
 ### ¿Cómo impacta la toma de decisiones?
-
-Permite establecer métricas y objetivos concretos para determinar si la solución realmente genera valor.
-
-Entre los indicadores podrían considerarse la tasa de conversión, reducción del abandono, valor promedio del pedido o retorno de la inversión de la solución.
+Permite establecer métricas concretas (tasa de conversión, reducción del abandono, ROI) para determinar si la solución genera valor. Sin esta etapa, las decisiones tecnológicas y operativas navegarían a ciegas.
 
 ### ¿Qué relación tiene con la arquitectura de datos?
-
-Los objetivos definidos por el negocio generan requerimientos para la arquitectura.
-
-Por ejemplo, si se necesita identificar una posible intención de abandono en tiempo real, la arquitectura deberá proporcionar mecanismos de baja latencia para capturar eventos, procesarlos y ponerlos a disposición del sistema de IA rápidamente.
+Los objetivos definidos por el negocio generan los requerimientos de la arquitectura. Si se necesita identificar una intención de abandono *en tiempo real*, la arquitectura deberá proporcionar mecanismos de baja latencia para capturar y procesar eventos al instante.
 
 ---
 
 <Callout type="error" emoji="🧠">
-  **Etapa Estratégica 2: Modelado y Configuración de la Solución de IA**
+  **Etapa Estratégica 2: Modelado (Configuración de la Solución de IA)**
 </Callout>
 
-En este caso, la etapa de Modelado representa la construcción y configuración de la solución analítica que utilizará los datos preparados.
+En este caso, la etapa de Modelado representa la construcción y configuración de la solución analítica (sistema RAG y LLM) que utilizará los datos preparados para generar inferencias.
 
-Debido a que el caso incorpora inteligencia artificial generativa, esta etapa puede incluir la selección y configuración del modelo, parámetros de inferencia, instrucciones del sistema, mecanismos de recuperación de información y reglas necesarias para producir respuestas coherentes.
-
-### ¿Por qué es crítica para la calidad de la solución?
-
-El modelado transforma los datos preparados en resultados que pueden utilizarse para apoyar una decisión o acción.
-
-La calidad de estos resultados depende de la calidad de los datos disponibles, de la selección del modelo y de la forma en que se configure la solución.
+### ¿Por qué es crítica para la calidad del dato?
+Es crítica para la calidad del dato porque el modelo dicta **qué transformaciones finales (como vectorización o generación de embeddings) deben aplicarse para que el dato adquiera valor semántico**. Además, el rendimiento del modelo sirve como el principal termómetro para identificar si los datos de entrada tienen la representatividad y limpieza suficientes; un mal modelo devalúa un dato que originalmente estaba bien estructurado.
 
 ### ¿Qué riesgos existen si esta etapa falla?
-
-Entre los principales riesgos se encuentran:
-
-- predicciones o recomendaciones incorrectas;
-- respuestas inconsistentes;
-- resultados irrelevantes;
-- alucinaciones de información;
-- recomendaciones de productos fuera de stock;
-- sugerencia de descuentos inexistentes;
-- disminución de la confianza del usuario.
+Los riesgos incluyen: predicciones incorrectas, respuestas inconsistentes, alucinaciones del modelo (inventar información), recomendar productos fuera de stock o sugerir descuentos inexistentes, lo que destruiría la confianza del usuario final.
 
 ### ¿Cómo impacta la toma de decisiones?
-
-Una solución mal configurada puede llevar al asistente a realizar recomendaciones inadecuadas y afectar directamente la experiencia de compra.
-
-Por el contrario, una solución adecuadamente configurada permite utilizar la información disponible para intervenir de forma más relevante y oportuna.
+Una solución mal configurada llevará al asistente a realizar recomendaciones inadecuadas, afectando directamente la decisión de compra del cliente. Una solución bien modelada permite utilizar los datos para intervenir justo a tiempo y recuperar una venta perdida.
 
 ### ¿Qué relación tiene con la arquitectura de datos?
-
-El modelado genera requisitos sobre la arquitectura necesarios para ejecutar la solución.
-
-Estos pueden incluir:
-
-- servicios de inferencia;
-- acceso a bases de datos;
-- recuperación semántica;
-- APIs de inteligencia artificial;
-- mecanismos de caché;
-- monitoreo;
-- control de latencia;
-- observabilidad de las interacciones.
-
-La arquitectura debe permitir que el modelo reciba información actualizada y entregue sus resultados dentro del tiempo requerido por la experiencia del usuario.
+El modelado genera requisitos arquitectónicos intensivos, como el despliegue de servicios de inferencia, llamadas a APIs de IA generativa, bases de datos vectoriales y control de latencia. La arquitectura debe estar diseñada para entregar el dato al modelo en milisegundos.
 
 ---
 
@@ -500,74 +352,13 @@ Aunque ambos trabajan con datos, sus objetivos principales son diferentes.
 
 ---
 
-# 7. Ejemplo Completo de Interacción en el Caso
-
-Para visualizar la relación de ambos modelos, puede seguirse un ejemplo específico.
-
-### Paso 1 — Captura del dato
-
-Un usuario entra a una tienda online, consulta un producto, lo agrega al carrito y permanece varios minutos sin completar la compra.
-
-**Ciclo del Dato:** captura e ingesta del evento.
-
-### Paso 2 — Procesamiento
-
-El evento se limpia, normaliza y almacena junto con información histórica relacionada con el usuario y el producto.
-
-**Ciclo del Dato:** procesamiento, transformación y almacenamiento.
-
-### Paso 3 — Definición del problema
-
-La empresa determina que quiere identificar usuarios con alta probabilidad de abandonar el carrito para mejorar la conversión.
-
-**CRISP-DM:** comprensión del negocio.
-
-### Paso 4 — Preparación
-
-Los datos históricos se organizan y transforman para obtener las variables necesarias para el análisis.
-
-**CRISP-DM:** comprensión y preparación de los datos.
-
-### Paso 5 — Construcción de la solución
-
-Se configura un modelo o sistema de IA capaz de utilizar los datos disponibles y generar una recomendación o respuesta contextual.
-
-**CRISP-DM:** modelado.
-
-### Paso 6 — Evaluación
-
-Se verifica si la solución mejora los indicadores definidos por el negocio.
-
-**CRISP-DM:** evaluación.
-
-### Paso 7 — Despliegue
-
-El asistente se integra a la plataforma de e-commerce y comienza a interactuar con usuarios reales.
-
-**CRISP-DM:** despliegue.
-
-### Paso 8 — Retroalimentación
-
-Las nuevas interacciones generan nuevos clics, consultas, conversiones y abandonos.
-
-Estos nuevos eventos regresan nuevamente al sistema de captura.
-
-**Ciclo del Dato:** inicia nuevamente el proceso.
-
-<Callout type="success" emoji="♻️">
-  **Resultado:** La arquitectura se convierte en un sistema de aprendizaje continuo en el que los datos alimentan el análisis, el análisis genera acciones y las acciones producen nuevos datos.
-</Callout>
-
----
-
-# 8. Impacto Conjunto en la Arquitectura de Datos
+# 7. Impacto Conjunto en la Arquitectura de Datos
 
 La principal conclusión del análisis es que **la arquitectura de datos debe diseñarse considerando simultáneamente la gestión de los datos y las necesidades del proyecto analítico**.
 
 En el caso estudiado:
 
 **El Ciclo del Dato exige:**
-
 - captura confiable de eventos;
 - procesamiento y transformación;
 - almacenamiento estructurado;
@@ -577,7 +368,6 @@ En el caso estudiado:
 - escalabilidad.
 
 **CRISP-DM exige:**
-
 - definición clara del problema empresarial;
 - comprensión de los datos;
 - preparación adecuada;
@@ -593,7 +383,7 @@ Cada componente participa en el ciclo de gestión del dato, pero también soport
 
 ---
 
-# 9. Conclusión
+# 8. Conclusión
 
 El **Ciclo del Dato** y **CRISP-DM** son modelos complementarios que operan sobre diferentes dimensiones del uso de la información.
 
