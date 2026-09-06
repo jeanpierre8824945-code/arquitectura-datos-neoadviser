@@ -1,6 +1,5 @@
 import { Callout } from 'nextra-theme-docs'
-{/* IMPORTANTE: Si tienes un componente Timeline creado por ti, debes importarlo aquí. Ejemplo: */}
-{/* import { Timeline, TimelineEvent } from '../../components/Timeline' */}
+import { Steps } from 'nextra/components'
 
 # Análisis Comparativo: Ciclo del Dato vs. CRISP-DM
 
@@ -156,23 +155,22 @@ La interconexión puede observarse principalmente en los puntos donde los datos 
 
 Así interactúan ambos modelos en milisegundos cuando un cliente entra a la tienda:
 
-<Timeline>
-  <TimelineEvent title="1. Captura (Ciclo del Dato)" time="Usuario inactivo">
-    El usuario agrega un producto al carrito y deja de interactuar. El sistema registra el evento.
-  </TimelineEvent>
-  <TimelineEvent title="2. Procesamiento y Almacenamiento (Ciclo del Dato)" time="Milisegundos después">
-    El evento se limpia, se estructura y se guarda en PostgreSQL y ChromaDB.
-  </TimelineEvent>
-  <TimelineEvent title="3. Preparación y Comprensión (CRISP-DM)" time="Análisis de contexto">
-    El sistema extrae el historial de ese usuario (clics, tiempo en página) para aislar las variables relevantes.
-  </TimelineEvent>
-  <TimelineEvent title="4. Modelado y Evaluación (CRISP-DM)" time="Intervención de IA">
-    El modelo LLM analiza la intención de abandono, decide que hay riesgo y genera una oferta de descuento.
-  </TimelineEvent>
-  <TimelineEvent title="5. Retorno al Ciclo" time="Acción final">
-    La IA lanza el chat con el descuento. Si el usuario compra (o ignora), se genera un nuevo dato que reinicia el ciclo para seguir aprendiendo.
-  </TimelineEvent>
-</Timeline>
+<Steps>
+### 1. Captura (Ciclo del Dato)
+El usuario agrega un producto al carrito y deja de interactuar. El sistema registra el evento.
+
+### 2. Procesamiento y Almacenamiento (Ciclo del Dato)
+El evento se limpia, se estructura y se guarda en PostgreSQL y ChromaDB.
+
+### 3. Preparación y Comprensión (CRISP-DM)
+El sistema extrae el historial de ese usuario (clics, tiempo en página) para aislar las variables relevantes.
+
+### 4. Modelado y Evaluación (CRISP-DM)
+El modelo LLM analiza la intención de abandono, decide que hay riesgo y genera una oferta de descuento.
+
+### 5. Retorno al Ciclo
+La IA lanza el chat con el descuento. Si el usuario compra (o ignora), se genera un nuevo dato que reinicia el ciclo para seguir aprendiendo.
+</Steps>
 
 <Callout type="warning" emoji="💡">
   **Idea central del caso**
@@ -213,7 +211,7 @@ Esta etapa exige una arquitectura capaz de recibir eventos de diferentes fuentes
 Una vez capturados los datos, es necesario transformarlos para que puedan ser utilizados de forma consistente por los sistemas analíticos y de inteligencia artificial.
 
 ### ¿Por qué es crítica para la calidad del dato?
-El procesamiento permite detectar inconsistencias, transform formatos y garantizar que los datos tengan una estructura adecuada para su posterior utilización. En el caso de los productos, por ejemplo, la información debe presentar características consistentes antes de ser transformada en embeddings (vectores) utilizados en la base de datos vectorial.
+El procesamiento permite detectar inconsistencias, transformar formatos y garantizar que los datos tengan una estructura adecuada para su posterior utilización. En el caso de los productos, por ejemplo, la información debe presentar características consistentes antes de ser transformada en embeddings (vectores) utilizados en la base de datos vectorial.
 
 ### ¿Qué riesgos existen si esta etapa falla?
 Una transformación incorrecta puede generar: información duplicada, valores inconsistentes, atributos incompletos o embeddings de baja calidad. Esto resultaría en representaciones incorrectas de productos y resultados de búsqueda semántica irrelevantes.
