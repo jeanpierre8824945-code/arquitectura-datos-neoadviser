@@ -110,71 +110,65 @@ Haz clic en cada sección para desplegar el análisis detallado.
 
 # 4. Interconexión entre el Ciclo del Dato y CRISP-DM
 
-El **Ciclo del Dato** y la metodología **CRISP-DM** representan procesos diferentes, pero complementarios. El primero se concentra en la gestión de la información durante su ciclo de vida, mientras que CRISP-DM estructura el proceso necesario para utilizar esos datos en la resolución de problemas de negocio.
-
-En el caso del asistente SaaS de inteligencia artificial para e-commerce, ambos procesos se conectan de forma continua: los datos son capturados y gestionados por la arquitectura, posteriormente son utilizados dentro de un proceso analítico y, después del despliegue de la solución, se generan nuevos datos que vuelven a alimentar el ciclo.
+El **Ciclo del Dato** y **CRISP-DM** son procesos distintos pero inseparables. Mientras el primero asegura que la materia prima (el dato) fluya y se gestione con calidad técnica, el segundo dicta metodológicamente cómo explotar esa materia prima para resolver el abandono de carrito.
 
 ![Interconexión entre el Ciclo del Dato y CRISP-DM](/ciclo.jpg)
 
-<Callout type="info" emoji="🔗">
-  **¿Cómo interpretar el diagrama?**
-
-  La parte superior representa el **Ciclo del Dato**, compuesto en este caso por cuatro momentos principales:
-
-  **1. Captura e Ingesta → 2. Procesamiento y Transformación → 3. Almacenamiento → 4. Disponibilidad y Uso.**
-
-  Una vez que los datos se encuentran disponibles para ser utilizados, pueden entrar en un proceso analítico estructurado mediante **CRISP-DM**.
-
-  Las fases representadas son:
-
-  **Comprensión del Negocio → Comprensión de los Datos → Preparación de los Datos → Modelado → Evaluación → Despliegue.**
-
-  Finalmente, la solución desplegada vuelve a interactuar con los usuarios y genera nuevas interacciones, eventos y registros. Estos **nuevos datos regresan al Ciclo del Dato**, formando un proceso continuo de retroalimentación.
+<Callout type="info" emoji="🔄">
+  **El motor del ecosistema:** La clave de esta arquitectura no son sus fases aisladas, sino su retroalimentación. El trabajo no termina al desplegar el modelo; las interacciones de los usuarios con la IA generan nuevos eventos que regresan al ciclo inicial, creando un sistema de aprendizaje continuo.
 </Callout>
 
 ---
 
-## 4.1 ¿Dónde se conectan ambos modelos?
+## 4.1 Mapeo de Fases (Teoría)
 
-La interconexión puede observarse principalmente en los puntos donde los datos gestionados por el Ciclo del Dato se convierten en insumos para las fases de CRISP-DM.
+¿En qué momento exacto los datos gestionados por la arquitectura se convierten en insumos analíticos?
 
-| Ciclo del Dato | CRISP-DM | Interconexión en el caso |
+| Ciclo del Dato | CRISP-DM | Interconexión en NeoAdviser |
 |---|---|---|
-| **Captura e Ingesta** | Comprensión del Negocio | Los eventos de los usuarios permiten identificar qué información se necesita para estudiar el abandono de carrito. |
-| **Procesamiento y Transformación** | Comprensión de los Datos | Los datos procesados permiten explorar patrones, características y relaciones relevantes para el problema. |
-| **Procesamiento y Transformación** | Preparación de los Datos | Los datos se limpian, filtran, estructuran y transforman para que puedan ser utilizados por la solución analítica. |
-| **Almacenamiento** | Comprensión y Preparación de los Datos | PostgreSQL y ChromaDB permiten conservar y consultar la información necesaria para el análisis y la recuperación de contexto. |
-| **Disponibilidad y Uso** | Modelado | Los datos disponibles sirven como entrada para construir y configurar la solución de IA. |
-| **Disponibilidad y Uso** | Evaluación | Los resultados producidos por la solución pueden compararse con los objetivos y métricas establecidos por el negocio. |
-| **Despliegue de la solución** | Retorno al Ciclo del Dato | La interacción del sistema con usuarios reales genera nuevos eventos que vuelven a ser capturados y almacenados. |
+| **Captura e Ingesta** | Comprensión del Negocio | Los eventos en crudo definen el alcance del problema de abandono. |
+| **Procesamiento** | Comprensión y Preparación | Limpieza, filtrado y vectorización de datos para hacerlos consumibles. |
+| **Almacenamiento** | Preparación de los Datos | PostgreSQL y ChromaDB indexan la información lista para el contexto. |
+| **Disponibilidad y Uso** | Modelado y Evaluación | El modelo LLM consume los vectores, genera la inferencia y se evalúa el éxito (KPI). |
+| **Generación (Feedback)** | Despliegue | El chat interactúa con el cliente; si hay compra o rechazo, se registra un nuevo evento. |
 
 ---
 
-## 4.2 El Caso en Acción (Paso a Paso)
+## 4.2 El Caso en Acción (Práctica en Milisegundos)
 
-Así interactúan ambos modelos en milisegundos cuando un cliente entra a la tienda:
+Así interactúan ambos modelos en tiempo real cuando un cliente entra a la tienda:
 
-### 1. Captura (Ciclo del Dato)
-El usuario agrega un producto al carrito y deja de interactuar. El sistema registra el evento.
+<div style={{ borderLeft: '3px solid #3b82f6', paddingLeft: '20px', marginLeft: '10px', marginTop: '20px' }}>
+  <div style={{ marginBottom: '20px', position: 'relative' }}>
+    <span style={{ position: 'absolute', left: '-29px', top: '2px', background: '#3b82f6', color: 'white', borderRadius: '50%', width: '15px', height: '15px', display: 'inline-block' }}></span>
+    <b style={{ color: '#3b82f6', fontSize: '1.1em' }}>1. Captura (Ciclo del Dato)</b>
+    <p style={{ margin: '5px 0 0', color: '#475569' }}>El usuario agrega un producto al carrito y detiene su navegación. El sistema captura este evento de inactividad.</p>
+  </div>
 
-### 2. Procesamiento y Almacenamiento (Ciclo del Dato)
-El evento se limpia, se estructura y se guarda en PostgreSQL y ChromaDB.
+  <div style={{ marginBottom: '20px', position: 'relative' }}>
+    <span style={{ position: 'absolute', left: '-29px', top: '2px', background: '#3b82f6', color: 'white', borderRadius: '50%', width: '15px', height: '15px', display: 'inline-block' }}></span>
+    <b style={{ color: '#3b82f6', fontSize: '1.1em' }}>2. Procesamiento y Almacenamiento (Ciclo del Dato)</b>
+    <p style={{ margin: '5px 0 0', color: '#475569' }}>El evento se limpia, se estructura y se guarda en las bases de datos (PostgreSQL/ChromaDB).</p>
+  </div>
 
-### 3. Preparación y Comprensión (CRISP-DM)
-El sistema extrae el historial de ese usuario (clics, tiempo en página) para aislar las variables relevantes.
+  <div style={{ marginBottom: '20px', position: 'relative' }}>
+    <span style={{ position: 'absolute', left: '-29px', top: '2px', background: '#ef4444', color: 'white', borderRadius: '50%', width: '15px', height: '15px', display: 'inline-block' }}></span>
+    <b style={{ color: '#ef4444', fontSize: '1.1em' }}>3. Preparación y Comprensión (CRISP-DM)</b>
+    <p style={{ margin: '5px 0 0', color: '#475569' }}>El sistema RAG extrae el historial semántico de ese usuario para aislar las variables de riesgo.</p>
+  </div>
 
-### 4. Modelado y Evaluación (CRISP-DM)
-El modelo LLM analiza la intención de abandono, decide que hay riesgo y genera una oferta de descuento.
+  <div style={{ marginBottom: '20px', position: 'relative' }}>
+    <span style={{ position: 'absolute', left: '-29px', top: '2px', background: '#ef4444', color: 'white', borderRadius: '50%', width: '15px', height: '15px', display: 'inline-block' }}></span>
+    <b style={{ color: '#ef4444', fontSize: '1.1em' }}>4. Modelado y Evaluación (CRISP-DM)</b>
+    <p style={{ margin: '5px 0 0', color: '#475569' }}>El LLM evalúa la intención de abandono y, detectando alto riesgo, genera dinámicamente una oferta.</p>
+  </div>
 
-### 5. Retorno al Ciclo
-La IA lanza el chat con el descuento. Si el usuario compra (o ignora), se genera un nuevo dato que reinicia el ciclo para seguir aprendiendo.
-
-<Callout type="warning" emoji="💡">
-  **Idea central del caso**
-
-  El valor de integrar ambos modelos está en que la arquitectura no termina cuando se despliega la solución de IA. El sistema continúa generando información, esa información puede analizarse nuevamente y los resultados pueden utilizarse para mejorar la solución. La combinación de ambos permite una arquitectura de **mejora continua basada en datos**.
-</Callout>
-
+  <div style={{ position: 'relative' }}>
+    <span style={{ position: 'absolute', left: '-29px', top: '2px', background: '#10b981', color: 'white', borderRadius: '50%', width: '15px', height: '15px', display: 'inline-block' }}></span>
+    <b style={{ color: '#10b981', fontSize: '1.1em' }}>5. Retorno al Ciclo (Feedback)</b>
+    <p style={{ margin: '5px 0 0', color: '#475569' }}>La IA despliega la oferta en el frontend. La reacción del usuario se convierte en un nuevo dato que reinicia el ciclo.</p>
+  </div>
+</div>
 ---
 
 # 5. Justificación Técnica de Etapas Estratégicas
