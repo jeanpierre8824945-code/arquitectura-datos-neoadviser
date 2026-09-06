@@ -1,5 +1,4 @@
 import { Callout } from 'nextra-theme-docs'
-import { Steps } from 'nextra/components'
 
 # Análisis Comparativo: Ciclo del Dato vs. CRISP-DM
 
@@ -155,7 +154,6 @@ La interconexión puede observarse principalmente en los puntos donde los datos 
 
 Así interactúan ambos modelos en milisegundos cuando un cliente entra a la tienda:
 
-<Steps>
 ### 1. Captura (Ciclo del Dato)
 El usuario agrega un producto al carrito y deja de interactuar. El sistema registra el evento.
 
@@ -170,7 +168,6 @@ El modelo LLM analiza la intención de abandono, decide que hay riesgo y genera 
 
 ### 5. Retorno al Ciclo
 La IA lanza el chat con el descuento. Si el usuario compra (o ignora), se genera un nuevo dato que reinicia el ciclo para seguir aprendiendo.
-</Steps>
 
 <Callout type="warning" emoji="💡">
   **Idea central del caso**
