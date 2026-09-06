@@ -102,19 +102,6 @@ Haz clic en cada sección para desplegar el análisis detallado.
   Este flujo representa principalmente la **infraestructura técnica que permite que los datos sean capturados, almacenados, recuperados y utilizados por el sistema de inteligencia artificial**.
 </Callout>
 
-### Relación de la arquitectura con los modelos analizados
-
-La arquitectura técnica mostrada constituye la base sobre la cual pueden implementarse tanto el **Ciclo del Dato** como **CRISP-DM**.
-
-| Componente de la arquitectura | Relación con el Ciclo del Dato | Relación con CRISP-DM |
-|---|---|---|
-| Frontend | Generación de nuevos datos y eventos de interacción | Proporciona datos relacionados con el comportamiento del usuario |
-| Backend / FastAPI | Captura, procesamiento y transferencia de información | Permite implementar la lógica necesaria para utilizar los datos |
-| PostgreSQL | Almacenamiento y gestión de datos estructurados | Proporciona información histórica para análisis |
-| ChromaDB | Almacenamiento de representaciones vectoriales y recuperación de información | Facilita el acceso a información relevante para la solución de IA |
-| Modelo LLM | Utilización de los datos procesados | Forma parte de la solución analítica implementada |
-| Respuesta al usuario | Genera nuevas interacciones y datos | Permite evaluar el comportamiento y resultados de la solución |
-
 <Callout type="warning" emoji="🔗">
   **Importante:** Este diagrama representa principalmente la arquitectura técnica del sistema. La relación específica entre las etapas del **Ciclo del Dato** y las fases de **CRISP-DM** se presenta en la siguiente sección.
 </Callout>
@@ -161,56 +148,30 @@ La interconexión puede observarse principalmente en los puntos donde los datos 
 | **Disponibilidad y Uso** | Evaluación | Los resultados producidos por la solución pueden compararse con los objetivos y métricas establecidos por el negocio. |
 | **Despliegue de la solución** | Retorno al Ciclo del Dato | La interacción del sistema con usuarios reales genera nuevos eventos que vuelven a ser capturados y almacenados. |
 
-<Callout type="success" emoji="♻️">
-  **La relación no es lineal.**
-
-  CRISP-DM no reemplaza al Ciclo del Dato, ni el Ciclo del Dato reemplaza a CRISP-DM. El primero garantiza la gestión de la información y el segundo proporciona una metodología para transformar esa información en una solución orientada al negocio.
-
-  Por eso, la arquitectura funciona como un proceso de retroalimentación:
-
-  **Datos → Análisis → Solución → Uso → Nuevos datos → Nuevo análisis**
-</Callout>
 
 ---
 
-## 4.2 Ejemplo Completo: Aplicación al asistente de IA para e-commerce
+## 4.2 El Caso en Acción (Paso a Paso)
 
-Para comprender mejor la relación y ver cómo interactúa el sistema en la práctica, analicemos el paso a paso de un caso de uso real.
+Así interactúan ambos modelos en milisegundos cuando un cliente entra a la tienda:
 
-### 🟢 1. Captura e Ingesta
-Un usuario ingresa a la tienda, consulta un producto, lo agrega al carrito y posteriormente permanece inactivo sin completar la compra. El sistema registra todos los eventos de esta sesión.
-**Ciclo del Dato:** Captura e Ingesta.
-
-### 🔵 2. Procesamiento y Transformación
-Los eventos recibidos son procesados para eliminar inconsistencias y estructurar la información. La información de los productos también se transforma en embeddings vectoriales para búsquedas semánticas.
-**Ciclo del Dato:** Procesamiento y Transformación.
-
-### 🟣 3. Almacenamiento
-Los datos estructurados se guardan en **PostgreSQL**, mientras que las representaciones vectoriales van a **ChromaDB**, conservando contexto e historia.
-**Ciclo del Dato:** Almacenamiento.
-
-### 🟡 4. Comprensión del Negocio
-La empresa se plantea: > *¿Cómo podemos identificar comportamientos asociados al abandono del carrito y usar esa información para mejorar la conversión?* Aquí comienza la aplicación analítica.
-**CRISP-DM:** Comprensión del Negocio.
-
-### 🟠 5. Comprensión y Preparación de los Datos
-Se extraen los datos históricos y se filtran para aislar las variables relevantes (tiempo en página, clics, valor del carrito) que alimentarán el sistema.
-**CRISP-DM:** Comprensión de los Datos + Preparación de los Datos.
-
-### 🔴 6. Modelado
-Con los datos preparados, se configura el sistema RAG y el modelo LLM para que analice la intención de abandono y recupere estrategias de intervención (ej. ofrecer un descuento).
-**CRISP-DM:** Modelado.
-
-### 🟤 7. Evaluación
-Se verifica si el asistente logró reducir la tasa de abandono de carritos y mejorar la conversión durante un periodo de prueba.
-**CRISP-DM:** Evaluación.
-
-### ⚫ 8. Despliegue
-La solución se integra plenamente al entorno de producción del e-commerce y comienza a interactuar proactivamente con todos los usuarios.
-**CRISP-DM:** Despliegue.
-
-### 🔄 9. Retorno al Ciclo del Dato
-Las nuevas interacciones (usuarios que aceptan el descuento, usuarios que cierran el chat, nuevas compras) generan nuevos registros. Estos regresan al sistema de captura, repitiendo el ciclo para mejorar continuamente.
+<Timeline>
+  <TimelineEvent title="1. Captura (Ciclo del Dato)" time="Usuario inactivo">
+    El usuario agrega un producto al carrito y deja de interactuar. El sistema registra el evento.
+  </TimelineEvent>
+  <TimelineEvent title="2. Procesamiento y Almacenamiento (Ciclo del Dato)" time="Milisegundos después">
+    El evento se limpia, se estructura y se guarda en PostgreSQL y ChromaDB.
+  </TimelineEvent>
+  <TimelineEvent title="3. Preparación y Comprensión (CRISP-DM)" time="Análisis de contexto">
+    El sistema extrae el historial de ese usuario (clics, tiempo en página) para aislar las variables relevantes.
+  </TimelineEvent>
+  <TimelineEvent title="4. Modelado y Evaluación (CRISP-DM)" time="Intervención de IA">
+    El modelo LLM analiza la intención de abandono, decide que hay riesgo y genera una oferta de descuento.
+  </TimelineEvent>
+  <TimelineEvent title="5. Retorno al Ciclo" time="Acción final">
+    La IA lanza el chat con el descuento. Si el usuario compra (o ignora), se genera un nuevo dato que reinicia el ciclo para seguir aprendiendo.
+  </TimelineEvent>
+</Timeline>
 
 <Callout type="warning" emoji="💡">
   **Idea central del caso**
@@ -218,31 +179,6 @@ Las nuevas interacciones (usuarios que aceptan el descuento, usuarios que cierra
   El valor de integrar ambos modelos está en que la arquitectura no termina cuando se despliega la solución de IA. El sistema continúa generando información, esa información puede analizarse nuevamente y los resultados pueden utilizarse para mejorar la solución. La combinación de ambos permite una arquitectura de **mejora continua basada en datos**.
 </Callout>
 
----
-
-## 4.3 Relación con la arquitectura de datos
-
-La interconexión entre ambos modelos tiene un impacto directo sobre la arquitectura.
-
-El **Ciclo del Dato** determina las capacidades necesarias para gestionar la información:
-
-**Capturar → Procesar → Almacenar → Poner a disposición → Utilizar.**
-
-Por otro lado, **CRISP-DM** determina las necesidades relacionadas con la explotación analítica:
-
-**Comprender el problema → Comprender los datos → Preparar → Modelar → Evaluar → Desplegar.**
-
-En el caso estudiado, ambas necesidades convergen en una arquitectura que integra:
-
-**Frontend / E-commerce → API → Ingesta de eventos → Procesamiento → PostgreSQL / ChromaDB → Servicios de IA → Respuesta al usuario → Nuevos eventos**
-
-Cada componente participa en el ciclo de gestión del dato, pero también soporta una o varias etapas del proceso analítico.
-
-<Callout type="info" emoji="🏗️">
-  **Conclusión arquitectónica**
-
-  La arquitectura de datos no debe diseñarse únicamente para almacenar información. También debe permitir que esa información sea procesada, analizada, utilizada por modelos de inteligencia artificial y posteriormente reutilizada para generar nuevos ciclos de aprendizaje y mejora.
-</Callout>
 
 ---
 
