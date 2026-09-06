@@ -179,87 +179,89 @@ La IA lanza el chat con el descuento. Si el usuario compra (o ignora), se genera
 
 # 5. Justificación Técnica de Etapas Estratégicas
 
+Haz clic en cada etapa para desplegar la justificación técnica, los riesgos y su impacto.
+
 ## 5.1 Etapas estratégicas del Ciclo del Dato
 
-<Callout type="warning" emoji="📥">
-  **Etapa Estratégica 1: Captura e Ingesta de Datos**
-</Callout>
+<details style={{ background: 'rgba(245, 158, 11, 0.05)', padding: '15px', borderRadius: '8px', marginBottom: '10px', border: '1px solid rgba(245, 158, 11, 0.2)' }}>
+  <summary style={{ cursor: 'pointer', fontWeight: 'bold', fontSize: '1.1em' }}>📥 Etapa Estratégica 1: Captura e Ingesta de Datos</summary>
+  <div style={{ marginTop: '15px' }}>
+    <p>En el caso estudiado, esta etapa comprende la recolección de eventos generados por los usuarios, como visitas a productos, clics, búsquedas, permanencia en páginas, adición de productos al carrito y abandono del proceso de compra.</p>
+    
+    <p style={{ marginTop: '15px' }}><b>¿Por qué es crítica para la calidad del dato?</b><br/>
+    La captura constituye el punto inicial de la información. Si los eventos no se registran correctamente, cualquier análisis posterior partirá de datos incompletos, incorrectos o inconsistentes. La calidad de los datos posteriores depende, en gran medida, de que la información original se haya capturado de forma precisa, completa y trazable.</p>
 
-En el caso estudiado, esta etapa comprende la recolección de eventos generados por los usuarios, como visitas a productos, clics, búsquedas, permanencia en páginas, adición de productos al carrito y abandono del proceso de compra.
+    <p style={{ marginTop: '15px' }}><b>¿Qué riesgos existen si esta etapa falla?</b><br/>
+    Una falla puede producir: pérdida de eventos importantes, registros duplicados, información incompleta, timestamps incorrectos o eventos fuera de orden. Por ejemplo, si el sistema no registra correctamente que un usuario agregó un producto al carrito, posteriormente no será posible determinar si ese usuario abandonó realmente una intención de compra.</p>
 
-### ¿Por qué es crítica para la calidad del dato?
-La captura constituye el punto inicial de la información. Si los eventos no se registran correctamente, cualquier análisis posterior partirá de datos incompletos, incorrectos o inconsistentes. La calidad de los datos posteriores depende, en gran medida, de que la información original se haya capturado de forma precisa, completa y trazable.
+    <p style={{ marginTop: '15px' }}><b>¿Cómo impacta la toma de decisiones?</b><br/>
+    Los datos incorrectamente capturados pueden provocar interpretaciones equivocadas sobre el comportamiento de los clientes. La empresa podría intervenir en momentos incorrectos o dejar de atender a usuarios que sí presentan señales claras de abandono.</p>
 
-### ¿Qué riesgos existen si esta etapa falla?
-Una falla puede producir: pérdida de eventos importantes, registros duplicados, información incompleta, timestamps incorrectos o eventos fuera de orden. Por ejemplo, si el sistema no registra correctamente que un usuario agregó un producto al carrito, posteriormente no será posible determinar si ese usuario abandonó realmente una intención de compra.
+    <p style={{ marginTop: '15px' }}><b>¿Qué relación tiene con la arquitectura de datos?</b><br/>
+    Esta etapa exige una arquitectura capaz de recibir eventos de diferentes fuentes de forma confiable. Dependiendo de la escala, pueden incorporarse mecanismos de ingestión mediante APIs, colas o plataformas de streaming como <b>Apache Kafka</b>, garantizando capacidad para manejar múltiples eventos sin perder información.</p>
+  </div>
+</details>
 
-### ¿Cómo impacta la toma de decisiones?
-Los datos incorrectamente capturados pueden provocar interpretaciones equivocadas sobre el comportamiento de los clientes. La empresa podría intervenir en momentos incorrectos o dejar de atender a usuarios que sí presentan señales claras de abandono.
+<details style={{ background: 'rgba(245, 158, 11, 0.05)', padding: '15px', borderRadius: '8px', marginBottom: '10px', border: '1px solid rgba(245, 158, 11, 0.2)' }}>
+  <summary style={{ cursor: 'pointer', fontWeight: 'bold', fontSize: '1.1em' }}>⚙️ Etapa Estratégica 2: Procesamiento y Transformación</summary>
+  <div style={{ marginTop: '15px' }}>
+    <p>Una vez capturados los datos, es necesario transformarlos para que puedan ser utilizados de forma consistente por los sistemas analíticos y de inteligencia artificial.</p>
 
-### ¿Qué relación tiene con la arquitectura de datos?
-Esta etapa exige una arquitectura capaz de recibir eventos de diferentes fuentes de forma confiable. Dependiendo de la escala, pueden incorporarse mecanismos de ingestión mediante APIs, colas o plataformas de streaming como **Apache Kafka**, garantizando capacidad para manejar múltiples eventos sin perder información.
+    <p style={{ marginTop: '15px' }}><b>¿Por qué es crítica para la calidad del dato?</b><br/>
+    El procesamiento permite detectar inconsistencias, transformar formatos y garantizar que los datos tengan una estructura adecuada para su posterior utilización. En el caso de los productos, por ejemplo, la información debe presentar características consistentes antes de ser transformada en embeddings (vectores) utilizados en la base de datos vectorial.</p>
 
----
+    <p style={{ marginTop: '15px' }}><b>¿Qué riesgos existen si esta etapa falla?</b><br/>
+    Una transformación incorrecta puede generar: información duplicada, valores inconsistentes, atributos incompletos o embeddings de baja calidad. Esto resultaría en representaciones incorrectas de productos y resultados de búsqueda semántica irrelevantes.</p>
 
-<Callout type="warning" emoji="⚙️">
-  **Etapa Estratégica 2: Procesamiento y Transformación**
-</Callout>
+    <p style={{ marginTop: '15px' }}><b>¿Cómo impacta la toma de decisiones?</b><br/>
+    Si la transformación de los datos es incorrecta, el asistente puede recuperar información equivocada y generar recomendaciones poco relevantes, como asociar un producto con otros que realmente no tienen relación o sugerir acciones desactualizadas.</p>
 
-Una vez capturados los datos, es necesario transformarlos para que puedan ser utilizados de forma consistente por los sistemas analíticos y de inteligencia artificial.
-
-### ¿Por qué es crítica para la calidad del dato?
-El procesamiento permite detectar inconsistencias, transformar formatos y garantizar que los datos tengan una estructura adecuada para su posterior utilización. En el caso de los productos, por ejemplo, la información debe presentar características consistentes antes de ser transformada en embeddings (vectores) utilizados en la base de datos vectorial.
-
-### ¿Qué riesgos existen si esta etapa falla?
-Una transformación incorrecta puede generar: información duplicada, valores inconsistentes, atributos incompletos o embeddings de baja calidad. Esto resultaría en representaciones incorrectas de productos y resultados de búsqueda semántica irrelevantes.
-
-### ¿Cómo impacta la toma de decisiones?
-Si la transformación de los datos es incorrecta, el asistente puede recuperar información equivocada y generar recomendaciones poco relevantes, como asociar un producto con otros que realmente no tienen relación o sugerir acciones desactualizadas.
-
-### ¿Qué relación tiene con la arquitectura de datos?
-Esta etapa condiciona la implementación de procesos ETL/ELT, servicios de procesamiento y mecanismos especializados de almacenamiento. La arquitectura debe combinar bases relacionales (**PostgreSQL**) con vectoriales (**ChromaDB**), exigiendo pipelines robustos que dirijan los datos limpios al almacenamiento correcto.
+    <p style={{ marginTop: '15px' }}><b>¿Qué relación tiene con la arquitectura de datos?</b><br/>
+    Esta etapa condiciona la implementación de procesos ETL/ELT, servicios de procesamiento y mecanismos especializados de almacenamiento. La arquitectura debe combinar bases relacionales (<b>PostgreSQL</b>) con vectoriales (<b>ChromaDB</b>), exigiendo pipelines robustos que dirijan los datos limpios al almacenamiento correcto.</p>
+  </div>
+</details>
 
 ---
 
 ## 5.2 Etapas estratégicas de CRISP-DM
 
-<Callout type="error" emoji="📊">
-  **Etapa Estratégica 1: Comprensión del Negocio**
-</Callout>
+<details style={{ background: 'rgba(239, 68, 68, 0.05)', padding: '15px', borderRadius: '8px', marginBottom: '10px', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
+  <summary style={{ cursor: 'pointer', fontWeight: 'bold', fontSize: '1.1em' }}>📊 Etapa Estratégica 1: Comprensión del Negocio</summary>
+  <div style={{ marginTop: '15px' }}>
+    <p>La Comprensión del Negocio constituye el punto de partida de CRISP-DM porque establece qué problema se pretende resolver y cómo se determinará el éxito de la solución (reducir el abandono de carrito).</p>
 
-La Comprensión del Negocio constituye el punto de partida de CRISP-DM porque establece qué problema se pretende resolver y cómo se determinará el éxito de la solución (reducir el abandono de carrito).
+    <p style={{ marginTop: '15px' }}><b>¿Por qué es crítica para la calidad del dato?</b><br/>
+    Es crítica para la calidad del dato porque si no se entiende bien el problema empresarial, <b>se recolectarán, limpiarán y priorizarán los datos equivocados</b>. Definir el objetivo del negocio asegura que los esfuerzos de calidad, gobernanza y estructuración de datos se enfoquen exactamente en las variables (eventos de sesión, tiempos, clics) que realmente importan para la solución, evitando llenar la arquitectura de "ruido" o datos inútiles.</p>
 
-### ¿Por qué es crítica para la calidad del dato?
-Es crítica para la calidad del dato porque si no se entiende bien el problema empresarial, **se recolectarán, limpiarán y priorizarán los datos equivocados**. Definir el objetivo del negocio asegura que los esfuerzos de calidad, gobernanza y estructuración de datos se enfoquen exactamente en las variables (eventos de sesión, tiempos, clics) que realmente importan para la solución, evitando llenar la arquitectura de "ruido" o datos inútiles.
+    <p style={{ marginTop: '15px' }}><b>¿Qué riesgos existen si esta etapa falla?</b><br/>
+    El principal riesgo es desarrollar una solución técnicamente correcta pero orientada al problema equivocado, o procesar terabytes de datos que no aportan al KPI deseado. Por ejemplo, podría construirse un sistema enfocado en predecir las ventas generales cuando el verdadero objetivo es detectar la intención de abandono a nivel de sesión individual.</p>
 
-### ¿Qué riesgos existen si esta etapa falla?
-El principal riesgo es desarrollar una solución técnicamente correcta pero orientada al problema equivocado, o procesar terabytes de datos que no aportan al KPI deseado. Por ejemplo, podría construirse un sistema enfocado en predecir las ventas generales cuando el verdadero objetivo es detectar la intención de abandono a nivel de sesión individual.
+    <p style={{ marginTop: '15px' }}><b>¿Cómo impacta la toma de decisiones?</b><br/>
+    Permite establecer métricas concretas (tasa de conversión, reducción del abandono, ROI) para determinar si la solución genera valor. Sin esta etapa, las decisiones tecnológicas y operativas navegarían a ciegas.</p>
 
-### ¿Cómo impacta la toma de decisiones?
-Permite establecer métricas concretas (tasa de conversión, reducción del abandono, ROI) para determinar si la solución genera valor. Sin esta etapa, las decisiones tecnológicas y operativas navegarían a ciegas.
+    <p style={{ marginTop: '15px' }}><b>¿Qué relación tiene con la arquitectura de datos?</b><br/>
+    Los objetivos definidos por el negocio generan los requerimientos de la arquitectura. Si se necesita identificar una intención de abandono <i>en tiempo real</i>, la arquitectura deberá proporcionar mecanismos de baja latencia para capturar y procesar eventos al instante.</p>
+  </div>
+</details>
 
-### ¿Qué relación tiene con la arquitectura de datos?
-Los objetivos definidos por el negocio generan los requerimientos de la arquitectura. Si se necesita identificar una intención de abandono *en tiempo real*, la arquitectura deberá proporcionar mecanismos de baja latencia para capturar y procesar eventos al instante.
+<details style={{ background: 'rgba(239, 68, 68, 0.05)', padding: '15px', borderRadius: '8px', marginBottom: '10px', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
+  <summary style={{ cursor: 'pointer', fontWeight: 'bold', fontSize: '1.1em' }}>🧠 Etapa Estratégica 2: Modelado (Configuración de IA)</summary>
+  <div style={{ marginTop: '15px' }}>
+    <p>En este caso, la etapa de Modelado representa la construcción y configuración de la solución analítica (sistema RAG y LLM) que utilizará los datos preparados para generar inferencias.</p>
 
----
+    <p style={{ marginTop: '15px' }}><b>¿Por qué es crítica para la calidad del dato?</b><br/>
+    Es crítica para la calidad del dato porque el modelo dicta <b>qué transformaciones finales (como vectorización o generación de embeddings) deben aplicarse para que el dato adquiera valor semántico</b>. Además, el rendimiento del modelo sirve como el principal termómetro para identificar si los datos de entrada tienen la representatividad y limpieza suficientes; un mal modelo devalúa un dato que originalmente estaba bien estructurado.</p>
 
-<Callout type="error" emoji="🧠">
-  **Etapa Estratégica 2: Modelado (Configuración de la Solución de IA)**
-</Callout>
+    <p style={{ marginTop: '15px' }}><b>¿Qué riesgos existen si esta etapa falla?</b><br/>
+    Los riesgos incluyen: predicciones incorrectas, respuestas inconsistentes, alucinaciones del modelo (inventar información), recomendar productos fuera de stock o sugerir descuentos inexistentes, lo que destruiría la confianza del usuario final.</p>
 
-En este caso, la etapa de Modelado representa la construcción y configuración de la solución analítica (sistema RAG y LLM) que utilizará los datos preparados para generar inferencias.
+    <p style={{ marginTop: '15px' }}><b>¿Cómo impacta la toma de decisiones?</b><br/>
+    Una solución mal configurada llevará al asistente a realizar recomendaciones inadecuadas, afectando directamente la decisión de compra del cliente. Una solución bien modelada permite utilizar los datos para intervenir justo a tiempo y recuperar una venta perdida.</p>
 
-### ¿Por qué es crítica para la calidad del dato?
-Es crítica para la calidad del dato porque el modelo dicta **qué transformaciones finales (como vectorización o generación de embeddings) deben aplicarse para que el dato adquiera valor semántico**. Además, el rendimiento del modelo sirve como el principal termómetro para identificar si los datos de entrada tienen la representatividad y limpieza suficientes; un mal modelo devalúa un dato que originalmente estaba bien estructurado.
-
-### ¿Qué riesgos existen si esta etapa falla?
-Los riesgos incluyen: predicciones incorrectas, respuestas inconsistentes, alucinaciones del modelo (inventar información), recomendar productos fuera de stock o sugerir descuentos inexistentes, lo que destruiría la confianza del usuario final.
-
-### ¿Cómo impacta la toma de decisiones?
-Una solución mal configurada llevará al asistente a realizar recomendaciones inadecuadas, afectando directamente la decisión de compra del cliente. Una solución bien modelada permite utilizar los datos para intervenir justo a tiempo y recuperar una venta perdida.
-
-### ¿Qué relación tiene con la arquitectura de datos?
-El modelado genera requisitos arquitectónicos intensivos, como el despliegue de servicios de inferencia, llamadas a APIs de IA generativa, bases de datos vectoriales y control de latencia. La arquitectura debe estar diseñada para entregar el dato al modelo en milisegundos.
+    <p style={{ marginTop: '15px' }}><b>¿Qué relación tiene con la arquitectura de datos?</b><br/>
+    El modelado genera requisitos arquitectónicos intensivos, como el despliegue de servicios de inferencia, llamadas a APIs de IA generativa, bases de datos vectoriales y control de latencia. La arquitectura debe estar diseñada para entregar el dato al modelo en milisegundos.</p>
+  </div>
+</details>
 
 ---
 
